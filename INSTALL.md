@@ -37,7 +37,7 @@ npm pack --ignore-scripts
 npx --package=./autoname-skill-0.1.0.tgz autoname
 ```
 
-The GitHub command downloads from this repository and does not require a separate npm registry release. npm registry publication and license selection are pending. `autoname-skill` is currently the local package identifier, with registry publication disabled by the package's private flag.
+The GitHub command downloads from this repository and does not require a separate npm registry release. AutoName uses the [MIT License](LICENSE); npm registry publication is pending. `autoname-skill` is currently the local package identifier, with registry publication disabled by the package's private flag.
 
 ### Standard skill manager
 
@@ -56,6 +56,18 @@ npx skills add . --skill autoname
 The [official installer](https://github.com/vercel-labs/skills/blob/main/docs/commands.md) lets users choose target agents, project or user scope, and symlink or copy installation. Installing files does not register AutoName hooks. Open the target agent and ask it to configure AutoName; the skill guides the format selection and uses `--in-place` to configure its existing canonical files safely.
 
 Keep the hook scope consistent with the chosen installation scope. For a project import, select that project's host configuration root rather than silently registering user-wide hooks. AutoName does not take ownership of the skill manager's files or links. Remove AutoName's hooks with its `uninstall` command before removing the skill through its manager.
+
+### WorkBuddy
+
+The built-in adapter supports on-demand naming and suggestions. From the updated source root, use the user's chosen format and actual host root:
+
+```bash
+python skills/autoname/scripts/autoname.py install --host workbuddy --mode on-demand --host-root "<actual-workbuddy-root>" --template "{project}｜{task}" --without-project "{task}" --max-chars 36
+```
+
+Replace the root placeholder; the format and length are examples. An existing valid preference file is preserved. No `--adapter` is needed. For an existing private-descriptor installation, retain its original host/data/skill locations and omit `--adapter` when reinstalling from updated source. Skill-manager imports instead configure their updated canonical helper with `--in-place`.
+
+No lifecycle trigger schema has been verified, so automatic mode is rejected. When the conversation ID is initially unavailable, use render, native tool, prepare, then confirm with the returned `conversation.conversationId`. The helper workflow has isolated regression coverage; rerun it in WorkBuddy to verify the installed version. See [the WorkBuddy guide](skills/autoname/references/workbuddy.md). The supplied Windows test reported an npx timeout, so Python/source is the established fallback for that environment; GitHub installation commands remain available for other environments.
 
 ### Global command
 
@@ -119,7 +131,7 @@ npm pack --ignore-scripts
 npx --package=./autoname-skill-0.1.0.tgz autoname
 ```
 
-GitHub 命令直接从本仓库下载，无需另行发布 npm 注册包。npm 注册包发布与许可证选择尚待完成。`autoname-skill` 当前是本地包标识，包内的私有标记禁止向 npm 注册表发布。
+GitHub 命令直接从本仓库下载，无需另行发布 npm 注册包。AutoName 采用 [MIT 许可证](LICENSE)，npm 注册包尚未发布。`autoname-skill` 当前是本地包标识，包内的私有标记禁止向 npm 注册表发布。
 
 ### 标准技能安装器
 
@@ -138,6 +150,18 @@ npx skills add . --skill autoname
 [官方安装器](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)支持选择目标智能体、项目级或用户级范围，以及符号链接或复制方式。安装文件本身不注册 AutoName hook。打开目标智能体，让它配置 AutoName；技能会引导选择格式，并通过 `--in-place` 安全配置现有的实际技能文件。
 
 hook 的范围应与安装选择一致。项目级导入应选当前项目的宿主配置目录，不静默改成用户全局配置。AutoName 不接管技能安装器管理的文件或链接。卸载时先用 AutoName 的 `uninstall` 移除 hook，再通过技能安装器移除文件。
+
+### WorkBuddy
+
+内置适配支持按需命名和标题建议。在更新后的源码根目录运行，使用用户选择的格式和实际宿主目录：
+
+```bash
+python skills/autoname/scripts/autoname.py install --host workbuddy --mode on-demand --host-root "<actual-workbuddy-root>" --template "{project}｜{task}" --without-project "{task}" --max-chars 36
+```
+
+替换目录占位符；格式与长度仅为示例。已有有效偏好会保留，无需 `--adapter`。原先使用私有适配描述的安装，应保留原宿主、数据及技能目录，从更新后的源码重新安装时省略 `--adapter`。由技能安装器管理的导入，则更新其实际文件后，用对应工具加 `--in-place` 重新配置。
+
+生命周期触发结构尚未核实，因此拒绝自动模式。如果最初拿不到会话 ID，依次渲染标题、调用原生工具、准备、确认，后两步使用回执中的 `conversation.conversationId`。工具流程已通过隔离回归测试；安装版本仍需在 WorkBuddy 中重新验证，详见 [WorkBuddy 指南](skills/autoname/references/workbuddy.md)。用户提供的 Windows 实测报告了 npx 超时，该环境可沿用 Python／源码安装；其他环境仍可使用 GitHub 安装命令。
 
 ### 全局命令
 

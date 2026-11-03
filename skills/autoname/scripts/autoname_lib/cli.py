@@ -9,7 +9,7 @@ import re
 import subprocess
 import sys
 
-from .adapters import load_adapter
+from .adapters import BUILTINS, load_adapter
 from .config import make_preferences, read_json, render_title, validate_preferences, write_json
 from .install import install, uninstall, installation_status
 
@@ -152,7 +152,10 @@ def main(argv=None):
             request = json.load(sys.stdin)
             if args.action == 'render':
                 preferences = validate_preferences(read_json(args.preferences or preferences_path))
-                emit({'title': render_title(preferences, request['task'], request.get('project')),
+                installed_adapter = data / 'hosts' / args.host / 'adapter.json'
+                descriptor = args.adapter or (installed_adapter if installed_adapter.is_file() else None)
+                adapter = load_adapter(args.host, descriptor) if descriptor or args.host in BUILTINS else {}
+                emit({'title': render_title(preferences, request['task'], request.get('project'), adapter.get('max_title_chars')),
                       'status': 'suggestion'})
             elif args.action == 'prepare':
                 emit(prepare_title(args.host, data, args.session_id, request))

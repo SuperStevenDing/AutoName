@@ -43,11 +43,11 @@ The examples use a suggested format. Field order, separators, literal prefixes, 
 - A reusable skill with first-install setup instructions.
 - An interactive installer and structured commands for agent-led setup.
 - Validated title templates and conversation-language guidance.
-- Codex lifecycle integration, an optional Claude Code SDK writer, and extensible adapter descriptors.
+- Codex lifecycle integration, an optional Claude Code SDK writer, a WorkBuddy on-demand adapter, and extensible adapter descriptors.
 - Safe reconfiguration, disable/enable, installation checks, and owned-file uninstall.
 - Portable source, npm, and skill ZIP packages checked for private data.
 
-**Verification:** installation and lifecycle behavior are tested in isolated host fixtures. The Claude SDK boundary uses a test double. Native desktop/CLI behavior still needs a new-chat check in the host where you install it. WorkBuddy's title-writing interface has not been verified.
+**Verification:** installation and lifecycle behavior are tested in isolated host fixtures. The Claude SDK boundary uses a test double. A user-supplied Windows WorkBuddy test handoff dated 2026-11-03 reported successful native title writes; the corrected helper workflow is covered by synthetic-receipt tests and still needs a live WorkBuddy rerun. Native desktop/CLI behavior needs a new-chat check in the target host.
 
 ### 🚀 Get started
 
@@ -71,7 +71,7 @@ To run directly with Python:
 python3 skills/autoname/scripts/autoname.py
 ```
 
-The guided terminal entries ask for a target agent, format, no-project fallback, and length limit. Inspect the previews and save. The installer copies the skill and merges its hooks while retaining unrelated settings. A standard skill-manager import runs setup on first use and uses in-place configuration for files or links the manager already owns.
+The guided terminal entries ask for a target agent, format, no-project fallback, and length limit. Inspect the previews and save. The installer copies the skill and, in automatic mode, merges its hooks while retaining unrelated settings. A standard skill-manager import runs setup on first use and uses in-place configuration for files or links the manager already owns. WorkBuddy requires explicit `--mode on-demand` and `--host-root`; see [installation options](INSTALL.md).
 
 For an agent-led installation, ask your agent to use the [AutoName skill](skills/autoname/SKILL.md). The agent collects the same choices through its own question form or conversation. A non-interactive installer returns `setup_required` instead of silently accepting a format. File-only imports start setup when you first invoke the skill.
 
@@ -116,9 +116,12 @@ AutoName uses open-ended adapter registration. Additional agents reuse the same 
 | --- | --- | --- |
 | Codex desktop | Built-in hooks and native `set_thread_title` confirmation. | Isolated lifecycle and installation fixtures; live new-chat check required. |
 | Claude Code | Built-in hook schema and official Agent SDK `rename_session`/`get_session_info`. | SDK boundary tests; compatible SDK must be installed in the selected interpreter; live host check required. |
-| Other agents, including WorkBuddy | Explicit descriptor plus a supported native tool, local JSON bridge, or suggestion mode. | Host interfaces must be discovered and tested for each integration. |
+| WorkBuddy | Built-in native `workbuddy_app_set_conversation_title` adapter with nested receipt confirmation; on-demand and suggestion modes. | Windows native writes reported in the user's test handoff; corrected flow tested with synthetic receipts; live rerun required. No verified lifecycle schema, so automatic mode is unavailable. |
+| Other agents | Explicit descriptor plus a supported native tool, local JSON bridge, or suggestion mode. | Host interfaces must be discovered and tested for each integration. |
 
 For Claude Code, install a compatible official `claude-agent-sdk` package in the interpreter used by AutoName, then use `install --host claude-code`. AutoName only uses local session metadata methods; it does not start a second model conversation. Existing custom titles are preserved.
+
+For WorkBuddy, use `install --host workbuddy --mode on-demand --host-root <actual-root>` with the user's chosen preferences. No private adapter descriptor is needed. If the current conversation ID is initially unavailable, render the title, call the native tool without `conversationId`, then prepare and confirm with the ID returned in `conversation.conversationId`. See [the WorkBuddy guide](skills/autoname/references/workbuddy.md) for installation, existing-install migration, and the live check. A workspace folder name does not establish a conversation ID or project membership.
 
 For another agent, start with [adapter.example.json](skills/autoname/assets/adapter.example.json). Set its identifier, verified hook schema, and title interface; pass `--host`, `--adapter`, and `--host-root` explicitly. A custom local bridge receives JSON on stdin and must confirm the exact session and title. See [the adapter guide](skills/autoname/references/adapters.md).
 
@@ -134,7 +137,7 @@ The distributed skill contains generic examples, not the author's personal paths
 
 The source download includes the skill, Python helpers, Node launcher, installation guide, and README images. The npm package includes the same skill and launcher. The standalone skill ZIP contains an `autoname/` folder and ships with a SHA-256 checksum. Packages are checked for personal paths, account identifiers, emails, credentials, runtime data, and private archive metadata.
 
-Read [setup](skills/autoname/references/setup.md), [commands](skills/autoname/references/commands.md), and [architecture](skills/autoname/references/architecture.md). GitHub installation is available. npm registry publication and license selection are pending.
+Read [setup](skills/autoname/references/setup.md), [commands](skills/autoname/references/commands.md), and [architecture](skills/autoname/references/architecture.md). GitHub installation is available. AutoName uses the [MIT License](LICENSE); npm registry publication is pending.
 
 ## 中文
 
@@ -160,11 +163,11 @@ AutoName 根据实际任务为智能体对话命名。首次安装时选择格�
 - 可复用的 skill 和首次安装引导。
 - 交互式安装器，以及供智能体调用的结构化配置命令。
 - 经过校验的标题模板和跟随对话语言的命名规则。
-- Codex 生命周期接入、可选的 Claude Code SDK 改名接口，以及可扩展的适配描述文件。
+- Codex 生命周期接入、可选的 Claude Code SDK 改名接口、WorkBuddy 按需命名适配，以及可扩展的适配描述文件。
 - 配置修改、停用与启用、安装检查，以及按文件归属卸载。
 - 经过隐私检查的源码、npm 和独立技能 ZIP 安装包。
 
-**验证范围：**安装和生命周期行为已在隔离的宿主测试环境中验证；Claude SDK 边界采用测试替身。实际桌面端或 CLI 的表现，需要在安装目标宿主的新对话中验证。WorkBuddy 的标题写入接口尚未核实。
+**验证范围：**安装和生命周期行为已在隔离的宿主测试环境中验证；Claude SDK 边界采用测试替身。用户提供的 2026-11-03 Windows WorkBuddy 实测交接材料报告了原生标题写入成功；修正后的工具流程已通过模拟回执测试，仍需在 WorkBuddy 中重新实测。桌面端或 CLI 的表现需要在目标宿主的新对话中验证。
 
 ### 🚀 开始使用
 
@@ -188,7 +191,7 @@ npx skills add 'SuperStevenDing/AutoName' --skill autoname
 python3 skills/autoname/scripts/autoname.py
 ```
 
-引导式终端入口会询问安装目标、命名格式、无项目备用格式及长度上限。查看预览后保存，安装器复制技能并合并自身的 hook，保留其他设置。标准技能安装器导入的文件或链接，在首次使用时通过原地配置完成接入，继续由原安装器管理。
+引导式终端入口会询问安装目标、命名格式、无项目备用格式及长度上限。查看预览后保存，安装器复制技能，并在自动模式下合并自身的 hook，保留其他设置。标准技能安装器导入的文件或链接，在首次使用时通过原地配置完成接入，继续由原安装器管理。WorkBuddy 需要显式传入 `--mode on-demand` 和 `--host-root`，见[安装方式](INSTALL.md)。
 
 也可以让智能体使用 [AutoName 技能](skills/autoname/SKILL.md)完成安装。它会通过宿主的提问表单或对话收集相同选择。非交互安装缺少格式时，返回 `setup_required`，不会静默接受预设。仅导入文件的渠道，在首次调用技能时进入配置。
 
@@ -233,9 +236,12 @@ AutoName 使用开放式适配注册，其他智能体复用同一份命名偏�
 | --- | --- | --- |
 | Codex 桌面端 | 内置 hooks 及原生 `set_thread_title` 结果确认。 | 已通过隔离的生命周期和安装测试，仍需实际新对话验证。 |
 | Claude Code | 内置 hook 结构，以及官方 SDK 的 `rename_session`、`get_session_info`。 | 已通过 SDK 边界测试；所选解释器需安装兼容 SDK，仍需实际宿主验证。 |
-| 其他智能体，包括 WorkBuddy | 显式适配描述文件，接入宿主原生工具、本地 JSON 桥接或标题建议模式。 | 各平台分别发现接口并验证。 |
+| WorkBuddy | 内置原生 `workbuddy_app_set_conversation_title` 适配及嵌套回执确认，支持按需命名和标题建议。 | 用户交接材料报告了 Windows 原生写入成功；修正流程已通过模拟回执测试，仍需宿主重测。生命周期结构尚未核实，自动模式不可用。 |
+| 其他智能体 | 显式适配描述文件，接入宿主原生工具、本地 JSON 桥接或标题建议模式。 | 各平台分别发现接口并验证。 |
 
 Claude Code 需要在 AutoName 使用的解释器中安装兼容的官方 `claude-agent-sdk`，然后执行 `install --host claude-code`。AutoName 只使用本地会话元数据方法，不另开模型对话，并保留已有自定义标题。
+
+WorkBuddy 使用 `install --host workbuddy --mode on-demand --host-root <actual-root>`，并传入用户选择的偏好，无需私有适配描述文件。如果调用前拿不到真实会话 ID，先渲染标题并调用原生工具，省略 `conversationId`，再用回执中 `conversation.conversationId` 的值执行准备和确认。[WorkBuddy 指南](skills/autoname/references/workbuddy.md)包含安装、已有配置迁移及实际宿主验证步骤。工作区目录名不能证明会话 ID 或项目归属。
 
 其他智能体可从 [adapter.example.json](skills/autoname/assets/adapter.example.json) 开始，填写标识、已核实的 hook 结构和标题接口，并显式传入 `--host`、`--adapter`、`--host-root`。本地桥接通过标准输入接收 JSON，必须确认完全一致的会话和标题。详见[适配指南](skills/autoname/references/adapters.md)。
 
@@ -251,4 +257,4 @@ AutoName 等待任务明确后命名，尊重用户指定的标题，自动命�
 
 源码包包含技能、Python 工具、Node 入口、安装说明和 README 图片。npm 包包含同一套技能及命令入口。独立技能 ZIP 内含 `autoname/` 文件夹，并附 SHA-256 校验文件。安装包检查个人路径、账户标识、邮箱、凭据、运行数据和私有归档元数据。
 
-完整说明见[首次配置](skills/autoname/references/setup.md)、[命令](skills/autoname/references/commands.md)和[架构](skills/autoname/references/architecture.md)。GitHub 安装入口已可使用；npm 注册包发布与许可证选择尚待完成。
+完整说明见[首次配置](skills/autoname/references/setup.md)、[命令](skills/autoname/references/commands.md)和[架构](skills/autoname/references/architecture.md)。GitHub 安装入口已可使用；AutoName 采用 [MIT 许可证](LICENSE)，npm 注册包尚未发布。

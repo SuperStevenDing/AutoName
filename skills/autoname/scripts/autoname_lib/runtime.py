@@ -110,7 +110,7 @@ def apply_title(host, data, session_id, request):
     return {'status': 'renamed', 'session_id': session_id, 'title': prepared['title']}
 
 
-def _returned_title(response, session_id, title, id_field='threadId'):
+def _returned_title(response, session_id, title, id_field='threadId', response_path=None):
     if not isinstance(response, dict) or response.get('isError'):
         return False
     candidates = [response, response.get('structuredContent')]
@@ -122,10 +122,19 @@ def _returned_title(response, session_id, title, id_field='threadId'):
                     candidates.append(json.loads(block.get('text', '')))
                 except (ValueError, TypeError):
                     pass
-    for value in candidates:
+    checked = list(candidates)
+    selected = candidates
+    if response_path is not None:
+        selected = []
+        for value in candidates:
+            for key in response_path.split('.'):
+                value = value.get(key) if isinstance(value, dict) else None
+                checked.append(value)
+            selected.append(value)
+    for value in checked:
         if isinstance(value, dict) and (value.get('ok') is False or value.get('success') is False or value.get('isError') or value.get('error') or value.get('status') in ('error', 'failed', 'failure')):
             return False
-    return any(isinstance(value, dict) and value.get(id_field) == session_id and value.get('title') == title for value in candidates)
+    return any(isinstance(value, dict) and value.get(id_field) == session_id and value.get('title') == title for value in selected)
 
 
 def confirm_native(host, data, session_id, response):
@@ -134,7 +143,8 @@ def confirm_native(host, data, session_id, response):
         raise ValueError('This adapter does not use a native title tool')
     with _database(host, data) as database:
         row = database.execute("SELECT pending_title FROM sessions WHERE session_key=? AND status='new'", (_session_key(session_id),)).fetchone()
-    if row is None or row[0] is None or not _returned_title(response, session_id, row[0], adapter['rename'].get('id_field', 'threadId')):
+    if row is None or row[0] is None or not _returned_title(response, session_id, row[0],
+            adapter['rename'].get('id_field', 'threadId'), adapter['rename'].get('response_path')):
         raise ValueError('No exact current-session title confirmation was returned')
     _complete(host, data, session_id, row[0])
     return {'status': 'renamed', 'session_id': session_id, 'title': row[0]}
@@ -209,7 +219,8 @@ def handle_event(host, data, event):
                 return None
             if arguments.get('threadId', session_id) != session_id or arguments.get('source', 'codex') != 'codex':
                 return None
-            if _returned_title(event.get('tool_response'), session_id, row[2], adapter['rename'].get('id_field', 'threadId')):
+            if _returned_title(event.get('tool_response'), session_id, row[2],
+                    adapter['rename'].get('id_field', 'threadId'), adapter['rename'].get('response_path')):
                 database.execute("UPDATE sessions SET status='done',pending_title=NULL WHERE session_key=? AND status='new'", (key,))
                 _verified(host, data)
             return None

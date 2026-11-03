@@ -16,6 +16,7 @@ Use the bundled Python helpers for setup, title rendering, and local host integr
 - For installation, missing preferences, or format changes, read [setup.md](references/setup.md). First-time setup belongs in the installation flow; collect a format before enabling automatic naming.
 - For host capabilities, hook registration, or troubleshooting, read [architecture.md](references/architecture.md). Verify the actual adapter and host version before reporting readiness.
 - For an additional agent or a host without a verified adapter, read [adapters.md](references/adapters.md). Establish whether automatic naming, on-demand naming, or title suggestions are available before activating a mode.
+- For WorkBuddy installation, upgrades, or naming, read [workbuddy.md](references/workbuddy.md). Its built-in adapter supports on-demand naming and suggestions; no lifecycle trigger schema has been verified.
 - If a file-only installation cannot run setup, start it when AutoName is first invoked. Existing valid preferences should not trigger setup on every chat.
 
 For an existing skill-manager import, use `install --in-place` from that skill's helper after collecting preferences. It registers hooks against the canonical imported files without copying or taking ownership of them. Match the host root and data location to the user's selected project or user scope. Guided npx and Python entries use this same helper; they need no separate preference format.
@@ -51,6 +52,8 @@ Do not request a language pack or present a separate language-selection step. If
 Load the user's saved preferences. Use `naming.template` when a project is verified and `naming.without_project` otherwise. Respect the configured character limit and any lower limit imposed by the host.
 
 Use `render` for previews and suggestions. For a native-tool adapter, use `prepare` with the current session identifier, then call the native tool with the returned exact title. Its hook confirms automatic results; on-demand mode passes the actual returned tool result to `confirm`. For a local SDK or command bridge, use `apply` instead. Task and project values are JSON stdin data, not shell code.
+
+When WorkBuddy exposes the current conversation ID only in the native result, use `render`, call `workbuddy_app_set_conversation_title` with `conversationId` omitted, then `prepare` and `confirm` using the returned `conversation.conversationId`. Keep rendering inputs unchanged and pass the unmodified receipt. Confirm only if the prepared title equals the rendered and returned title. See the [WorkBuddy procedure](references/workbuddy.md).
 
 The template controls field order, separators, and literal text. `{project}｜{task}` and a 36-character limit are setup suggestions, not mandatory defaults. A missing preference file starts setup rather than silently opting the user into this example.
 

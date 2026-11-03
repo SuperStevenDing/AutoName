@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Automatic chat titles in your format and conversation language, with guided setup and extensible agent integrations.｜自动命名对话，格式自定、语言随对话，支持引导配置与可扩展的智能体适配。",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bin": {
     "autoname": "bin/autoname.cjs"
   },

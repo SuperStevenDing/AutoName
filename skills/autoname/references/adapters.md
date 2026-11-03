@@ -8,7 +8,9 @@ Start from [adapter.example.json](../assets/adapter.example.json). Use `install 
 
 `id` is a stable lowercase identifier. `hook_style` is `codex`, `claude`, or `none`; use a named schema only after verifying that the host implements it. `settings_file` is relative to the chosen host root. The installer does not guess WorkBuddy or another agent's settings directory.
 
-`rename.kind` is `native-tool`, `claude-sdk`, `command`, or `suggestion`. A native tool supplies `tool` and optionally `id_field` for its response session key. A command writer supplies an explicit `command` argument array. It runs with `shell=False` and a five-second timeout, receives only the current session, proposed title, and project directory, and must return an exact confirmation.
+`rename.kind` is `native-tool`, `claude-sdk`, `command`, or `suggestion`. A native tool supplies `tool` and optionally `id_field` for its response session key (default `threadId`). For nested results, set `response_path` to dot-separated object keys, such as `conversation`; the selected object must contain both `id_field` and `title`. The path is applied to the direct response, `structuredContent`, and JSON text blocks. Confirmation checks exact session/title equality and rejects explicit errors in the envelope or selected path. It does not search arbitrary nested objects. Omitting `response_path` retains direct-object confirmation.
+
+A command writer supplies an explicit `command` argument array. It runs with `shell=False` and a five-second timeout, receives only the current session, proposed title, and project directory, and must return an exact confirmation.
 
 Request on stdin: `{"session_id":"current-session","title":"Review results","directory":"/path/to/project"}`.
 
@@ -19,6 +21,8 @@ Bridge failure, malformed output, a mismatched session or title, or an explicit 
 On-demand `prepare`/`apply` input accepts an explicit absolute `directory` for the current conversation's project context. Supply it when executing from the skill folder or another directory. The helper refreshes it on each explicit call; automatic mode instead uses the enrolled host event's directory.
 
 ## Discover capabilities
+
+The built-in WorkBuddy descriptor uses `workbuddy_app_set_conversation_title`, `response_path: conversation`, `id_field: conversationId`, and a 200-character host limit. Its Windows native writes were reported in a user-supplied test handoff dated 2026-11-03; host version was not provided. The corrected helper workflow is covered by isolated tests, with a live WorkBuddy rerun still required. Available modes are on-demand and suggestion. No lifecycle schema is verified, so automatic mode remains rejected. See [WorkBuddy installation and confirmation](workbuddy.md).
 
 Identify the actual host, version, execution environment, and current conversation. Inspect available tools, documented APIs or SDKs, native commands, plugin facilities, and lifecycle events as relevant. Use official documentation and observed results to establish each capability; preserve unknowns as unknowns.
 

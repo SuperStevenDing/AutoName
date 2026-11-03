@@ -13,6 +13,10 @@ BUILTINS = {
               'rename': {'kind': 'native-tool', 'tool': 'set_thread_title'}},
     'claude-code': {'id': 'claude-code', 'hook_style': 'claude', 'settings_file': 'settings.json',
                     'rename': {'kind': 'claude-sdk'}},
+    'workbuddy': {'id': 'workbuddy', 'hook_style': 'none', 'settings_file': 'autoname.settings.json',
+                  'max_title_chars': 200,
+                  'rename': {'kind': 'native-tool', 'tool': 'workbuddy_app_set_conversation_title',
+                             'id_field': 'conversationId', 'response_path': 'conversation'}},
 }
 
 
@@ -31,6 +35,9 @@ def validate_adapter(value):
         raise ValueError('Invalid title writer')
     if rename['kind'] == 'native-tool' and not re.fullmatch(r'[A-Za-z0-9_.-]+', str(rename.get('tool', ''))):
         raise ValueError('Invalid native tool name')
+    if 'response_path' in rename and (not isinstance(rename['response_path'], str) or
+            not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*', rename['response_path'])):
+        raise ValueError('Invalid native response path; use dot-separated object keys')
     if rename['kind'] == 'command':
         command = rename.get('command')
         if not isinstance(command, list) or not command or any(not isinstance(item, str) or not item or '\0' in item for item in command):
