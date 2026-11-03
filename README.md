@@ -53,17 +53,16 @@ The examples use a suggested format. Field order, separators, literal prefixes, 
 
 Choose guided npx, a standard skill manager, a persistent npm command, Python/source, or the portable ZIP. All entries share the same preferences and hook implementation. Full commands and publication status are in [installation options](INSTALL.md).
 
-From a source checkout, create the local npm package and start setup:
+Start guided setup directly from GitHub:
 
 ```bash
-npm pack --ignore-scripts
-npx --package=./autoname-skill-0.1.0.tgz autoname
+npx --package='github:SuperStevenDing/AutoName' autoname
 ```
 
-To install the skill through the standard manager from a checkout:
+To install the skill through the standard manager:
 
 ```bash
-npx skills add . --skill autoname
+npx skills add 'SuperStevenDing/AutoName' --skill autoname
 ```
 
 To run directly with Python:
@@ -76,7 +75,7 @@ The guided terminal entries ask for a target agent, format, no-project fallback,
 
 For an agent-led installation, ask your agent to use the [AutoName skill](skills/autoname/SKILL.md). The agent collects the same choices through its own question form or conversation. A non-interactive installer returns `setup_required` instead of silently accepting a format. File-only imports start setup when you first invoke the skill.
 
-The base helpers need Python 3.9 or later and no third-party packages. Run all commands with the Python interpreter you want the installed hooks to use. After installation, reload the host if needed and complete its native hook trust steps.
+The base helpers need Python 3.9 or later and no third-party packages. Guided npx also needs Node.js 18 or later. Run Python commands with the interpreter you want the installed hooks to use. After installation, reload the host if needed and complete its native hook trust steps.
 
 ### 🎛️ Pick your format
 
@@ -135,7 +134,7 @@ The distributed skill contains generic examples, not the author's personal paths
 
 The source download includes the skill, Python helpers, Node launcher, installation guide, and README images. The npm package includes the same skill and launcher. The standalone skill ZIP contains an `autoname/` folder and ships with a SHA-256 checksum. Packages are checked for personal paths, account identifiers, emails, credentials, runtime data, and private archive metadata.
 
-Read [setup](skills/autoname/references/setup.md), [commands](skills/autoname/references/commands.md), and [architecture](skills/autoname/references/architecture.md). GitHub installation commands require the source files to be uploaded. npm registry publication and license selection are pending.
+Read [setup](skills/autoname/references/setup.md), [commands](skills/autoname/references/commands.md), and [architecture](skills/autoname/references/architecture.md). GitHub installation is available. npm registry publication and license selection are pending.
 
 ## 中文
 
@@ -171,17 +170,16 @@ AutoName 根据实际任务为智能体对话命名。首次安装时选择格�
 
 可以选择引导式 npx、标准技能安装器、全局 npm 命令、Python／源码或独立 ZIP。各入口复用同一份偏好和 hook 实现。完整命令及发布状态见[安装方式](INSTALL.md)。
 
-在源码仓库中生成本地 npm 包，然后进入配置：
+直接从 GitHub 运行安装向导：
 
 ```bash
-npm pack --ignore-scripts
-npx --package=./autoname-skill-0.1.0.tgz autoname
+npx --package='github:SuperStevenDing/AutoName' autoname
 ```
 
-通过标准技能安装器从当前仓库安装：
+通过标准技能安装器安装：
 
 ```bash
-npx skills add . --skill autoname
+npx skills add 'SuperStevenDing/AutoName' --skill autoname
 ```
 
 直接使用 Python：
@@ -194,7 +192,7 @@ python3 skills/autoname/scripts/autoname.py
 
 也可以让智能体使用 [AutoName 技能](skills/autoname/SKILL.md)完成安装。它会通过宿主的提问表单或对话收集相同选择。非交互安装缺少格式时，返回 `setup_required`，不会静默接受预设。仅导入文件的渠道，在首次调用技能时进入配置。
 
-基础工具需要 Python 3.9 或更高版本，无第三方依赖。使用你希望 hook 调用的同一个 Python 解释器执行命令。安装后按需重新加载宿主，并完成宿主自身要求的 hook 信任步骤。
+基础工具需要 Python 3.9 或更高版本，无第三方依赖。引导式 npx 还需要 Node.js 18 或更高版本。执行 Python 命令时，使用你希望 hook 调用的同一个解释器。安装后按需重新加载宿主，并完成宿主自身要求的 hook 信任步骤。
 
 ### 🎛️ 定义命名格式
 
@@ -253,4 +251,4 @@ AutoName 等待任务明确后命名，尊重用户指定的标题，自动命�
 
 源码包包含技能、Python 工具、Node 入口、安装说明和 README 图片。npm 包包含同一套技能及命令入口。独立技能 ZIP 内含 `autoname/` 文件夹，并附 SHA-256 校验文件。安装包检查个人路径、账户标识、邮箱、凭据、运行数据和私有归档元数据。
 
-完整说明见[首次配置](skills/autoname/references/setup.md)、[命令](skills/autoname/references/commands.md)和[架构](skills/autoname/references/architecture.md)。GitHub 安装命令需在源码上传后使用；npm 注册包发布与许可证选择尚待完成。
+完整说明见[首次配置](skills/autoname/references/setup.md)、[命令](skills/autoname/references/commands.md)和[架构](skills/autoname/references/architecture.md)。GitHub 安装入口已可使用；npm 注册包发布与许可证选择尚待完成。

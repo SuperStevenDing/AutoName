@@ -18,39 +18,39 @@ All configuration and hook helpers require Python 3.9 or later. The guided Node 
 
 ### Guided npx
 
-From the downloaded or cloned source root, create a local package and run it:
+Run the installer directly from GitHub:
+
+```bash
+npx --package='github:SuperStevenDing/AutoName' autoname
+```
+
+The wizard asks for the target agent and naming format. You can also select a host directly:
+
+```bash
+npx --package='github:SuperStevenDing/AutoName' autoname install --host codex
+```
+
+From a downloaded or cloned source root, you can also create and run a local package:
 
 ```bash
 npm pack --ignore-scripts
 npx --package=./autoname-skill-0.1.0.tgz autoname
 ```
 
-The wizard asks for the target agent and naming format. You can also select a host directly:
-
-```bash
-npx --package=./autoname-skill-0.1.0.tgz autoname install --host codex
-```
-
-After the source is published to GitHub, replace the quoted placeholder with its real public repository:
-
-```bash
-npx --package='github:<owner>/<repo>' autoname
-```
-
-The placeholder command works after the source files are uploaded to the selected repository. npm registry publication and license selection are pending. `autoname-skill` is currently the local package identifier, with registry publication disabled by the package's private flag.
+The GitHub command downloads from this repository and does not require a separate npm registry release. npm registry publication and license selection are pending. `autoname-skill` is currently the local package identifier, with registry publication disabled by the package's private flag.
 
 ### Standard skill manager
+
+From GitHub:
+
+```bash
+npx skills add 'SuperStevenDing/AutoName' --skill autoname
+```
 
 From a local source checkout:
 
 ```bash
 npx skills add . --skill autoname
-```
-
-After GitHub publication:
-
-```bash
-npx skills add '<owner>/<repo>' --skill autoname
 ```
 
 The [official installer](https://github.com/vercel-labs/skills/blob/main/docs/commands.md) lets users choose target agents, project or user scope, and symlink or copy installation. Installing files does not register AutoName hooks. Open the target agent and ask it to configure AutoName; the skill guides the format selection and uses `--in-place` to configure its existing canonical files safely.
@@ -100,39 +100,39 @@ Both ask for a host and first-run preferences in a terminal. An installing agent
 
 ### 引导式 npx
 
-在下载或克隆的源码根目录中生成本地包并运行：
+直接从 GitHub 运行安装器：
+
+```bash
+npx --package='github:SuperStevenDing/AutoName' autoname
+```
+
+向导会询问安装目标和命名格式，也可以直接指定目标：
+
+```bash
+npx --package='github:SuperStevenDing/AutoName' autoname install --host codex
+```
+
+也可以在下载或克隆的源码根目录中生成并运行本地包：
 
 ```bash
 npm pack --ignore-scripts
 npx --package=./autoname-skill-0.1.0.tgz autoname
 ```
 
-向导会询问安装目标和命名格式，也可以直接指定目标：
-
-```bash
-npx --package=./autoname-skill-0.1.0.tgz autoname install --host codex
-```
-
-源码发布到 GitHub 后，将引号中的占位内容替换为真实公开仓库：
-
-```bash
-npx --package='github:<owner>/<repo>' autoname
-```
-
-占位命令需在源码上传至所选仓库后使用。npm 注册包发布与许可证选择尚待完成。`autoname-skill` 当前是本地包标识，包内的私有标记禁止向 npm 注册表发布。
+GitHub 命令直接从本仓库下载，无需另行发布 npm 注册包。npm 注册包发布与许可证选择尚待完成。`autoname-skill` 当前是本地包标识，包内的私有标记禁止向 npm 注册表发布。
 
 ### 标准技能安装器
+
+从 GitHub 安装：
+
+```bash
+npx skills add 'SuperStevenDing/AutoName' --skill autoname
+```
 
 从本地仓库安装：
 
 ```bash
 npx skills add . --skill autoname
-```
-
-发布到 GitHub 后：
-
-```bash
-npx skills add '<owner>/<repo>' --skill autoname
 ```
 
 [官方安装器](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)支持选择目标智能体、项目级或用户级范围，以及符号链接或复制方式。安装文件本身不注册 AutoName hook。打开目标智能体，让它配置 AutoName；技能会引导选择格式，并通过 `--in-place` 安全配置现有的实际技能文件。
