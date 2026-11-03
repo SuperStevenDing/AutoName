@@ -37,6 +37,8 @@ For an enrolled automatic chat, use `prepare --host <host> --session-id <current
 
 For Codex, use its native `set_thread_title` and omit `threadId` and `source` to target the calling chat. On-demand native adapters have no recurring hook; after an actual tool success, pass the unmodified tool response to `confirm --host <host> --session-id <current-id>` through JSON stdin. Never manufacture a confirmation result.
 
+For WorkBuddy, install with `--host workbuddy --mode on-demand --host-root <actual-root>`; no private descriptor is needed. When the ID is initially unavailable, use `render`, call `workbuddy_app_set_conversation_title` with `conversationId` omitted, then `prepare` and `confirm` with `--session-id` equal to the receipt's `conversation.conversationId`. Keep the task/project inputs unchanged and pass the original tool receipt to `confirm`. Check that all three titles match. Rendering enforces a known adapter's host limit, including WorkBuddy's 200-character limit. See [the complete procedure and upgrade instructions](workbuddy.md).
+
 If the user supplies a protected title or asks to keep the current one, run `skip --host <host> --session-id <current-id>` to stop pending automatic requests for that chat. This does not claim a title write. Do not skip preliminary greetings; those should wait for a clear task.
 
 ## Local SDK and bridge writers

@@ -21,7 +21,9 @@ The Codex adapter registers `SessionStart`, `UserPromptSubmit`, and `PostToolUse
 
 The Claude Code adapter uses the same documented event family in `settings.json`. The current model calls the helper, which uses the optional official SDK's `rename_session` and `get_session_info` for a local write and readback. It preserves a preexisting custom title. See [Claude Code hooks](https://code.claude.com/docs/en/hooks) and [the Python SDK session metadata methods](https://code.claude.com/docs/en/agent-sdk/python). No model query or history listing is used by the writer.
 
-Additional agents use [explicit descriptors and bridges](adapters.md). Codex and Claude hook schemas are implemented. An unrelated schema needs a schema adapter rather than an assumed filename or event. WorkBuddy's [plugin guide](https://www.workbuddy.cn/docs/workbuddy/Plugins) establishes Skill and Hook plugin categories; its programmatic title writer remains unverified.
+The WorkBuddy adapter uses the native `workbuddy_app_set_conversation_title` tool in on-demand mode, with exact confirmation from `conversation.conversationId` and `conversation.title`. Its descriptor selects the nested response object, sets a 200-character host limit, and declares no hooks. If the real ID is available only after the write, render and call the current-chat tool first, then prepare and confirm with the returned ID. Windows native writes were reported in the user's 2026-11-03 test handoff; the corrected helper workflow is tested with isolated receipts and still requires a live host rerun. See [the WorkBuddy procedure](workbuddy.md).
+
+Additional agents use [explicit descriptors and bridges](adapters.md). Codex and Claude hook schemas are implemented. An unrelated schema needs a schema adapter rather than an assumed filename or event. No WorkBuddy lifecycle trigger schema has been verified; automatic mode remains unavailable for this adapter.
 
 ## Installation and readiness
 
