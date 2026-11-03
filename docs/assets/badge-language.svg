@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="182" height="30" viewBox="0 0 182 30" role="img" aria-label="Language: follows chat">
+  <rect x=".5" y=".5" width="181" height="29" rx="9" fill="#FFF0E7" stroke="#EDC2A9"/>
+  <g fill="none" stroke="#754333" stroke-width="1.5">
+    <circle cx="18" cy="15" r="7"/>
+    <ellipse cx="18" cy="15" rx="3" ry="7"/>
+    <path d="M11 15h14"/>
+  </g>
+  <text x="33" y="19.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#754333">Language · Follows chat</text>
+</svg>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoName"
+  short_description: "Automatic chat titles in your format and conversation language"
+  default_prompt: "Use $autoname to set up automatic chat titles and choose my naming format."

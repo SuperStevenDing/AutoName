@@ -1,0 +1,8 @@
+{
+  "id": "example-agent",
+  "hook_style": "none",
+  "settings_file": "settings.json",
+  "rename": {
+    "kind": "suggestion"
+  }
+}

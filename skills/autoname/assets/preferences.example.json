@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "naming": {
+    "template": "{project}｜{task}",
+    "without_project": "{task}",
+    "max_chars": 36,
+    "language": "conversation",
+    "project_aliases": {}
+  }
+}

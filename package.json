@@ -1,0 +1,35 @@
+{
+  "name": "autoname-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automatic chat titles in your format and conversation language, with guided setup and extensible agent integrations.｜自动命名对话，格式自定、语言随对话，支持引导配置与可扩展的智能体适配。",
+  "license": "UNLICENSED",
+  "bin": {
+    "autoname": "bin/autoname.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "INSTALL.md",
+    "docs/assets/banner.svg",
+    "docs/assets/naming-preview.svg",
+    "docs/assets/badge-format.svg",
+    "docs/assets/badge-language.svg",
+    "docs/assets/badge-adapters.svg",
+    "bin/autoname.cjs",
+    "skills/autoname/SKILL.md",
+    "skills/autoname/agents/openai.yaml",
+    "skills/autoname/assets/*.example.json",
+    "skills/autoname/references/*.md",
+    "skills/autoname/scripts/autoname.py",
+    "skills/autoname/scripts/autoname_lib/*.py"
+  ],
+  "keywords": [
+    "agent-skills",
+    "ai-agents",
+    "autoname",
+    "automation",
+    "chat-titles"
+  ]
+}

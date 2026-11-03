@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="406" viewBox="0 0 1200 406" role="img" aria-labelledby="title desc">
+  <title id="title">From a clear task to a useful title / 从明确任务到清晰标题</title>
+  <desc id="desc">Illustrative examples: Fix duplicate invoices in Billing becomes Billing｜Fix duplicate invoices. 帮我检查研究结果 becomes 示例项目｜检查研究结果. Project names use verified project metadata; the illustrated format is configurable.</desc>
+  <rect x="1" y="1" width="1198" height="404" rx="24" fill="#FFFDF8" stroke="#E0E6DC" stroke-width="2"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Noto Sans CJK SC', 'PingFang SC', sans-serif" fill="#173F3C">
+    <text x="38" y="48" font-size="15" font-weight="700" letter-spacing="1.3">A TASK, A TITLE. / 一句任务，一个好标题。</text>
+    <rect x="895" y="25" width="266" height="33" rx="16.5" fill="#EEF4E8"/>
+    <text x="1028" y="47" text-anchor="middle" font-size="13" font-weight="600" fill="#45655E">Illustration · 效果示意</text>
+    <text x="42" y="98" font-size="14" fill="#63776E">YOUR TASK / 你的任务</text>
+    <text x="632" y="98" font-size="14" fill="#63776E">CHAT TITLE / 对话标题</text>
+    <rect x="38" y="117" width="499" height="72" rx="15" fill="#F1F3ED"/>
+    <path d="M59 138h21v15H66l-7 6Z" fill="none" stroke="#6D8276" stroke-width="2" stroke-linejoin="round"/>
+    <text x="95" y="160" font-size="23">Fix duplicate invoices in Billing.</text>
+    <path d="M560 153h38m-9-9 9 9-9 9" fill="none" stroke="#84AB8D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="626" y="117" width="536" height="72" rx="15" fill="#DDF4E6" stroke="#AFD9BE"/>
+    <circle cx="652" cy="153" r="7" fill="#35835C"/>
+    <text x="675" y="160" font-size="23" font-weight="600">Billing｜Fix duplicate invoices</text>
+    <rect x="38" y="209" width="499" height="72" rx="15" fill="#F1F3ED"/>
+    <path d="M59 230h21v15H66l-7 6Z" fill="none" stroke="#6D8276" stroke-width="2" stroke-linejoin="round"/>
+    <text x="95" y="253" font-size="23">帮我检查研究结果。</text>
+    <path d="M560 245h38m-9-9 9 9-9 9" fill="none" stroke="#C7977D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="626" y="209" width="536" height="72" rx="15" fill="#FFE7D8" stroke="#EDC2A9"/>
+    <circle cx="652" cy="245" r="7" fill="#C97249"/>
+    <text x="675" y="253" font-size="23" font-weight="600">示例项目｜检查研究结果</text>
+    <path d="M38 310h1124" stroke="#E3E7DF"/>
+    <text x="38" y="344" font-size="18" font-weight="600">First clear task. Name once. Keep your format.</text>
+    <text x="38" y="375" font-size="17" fill="#63776E">任务明确后命名，成功一次即停止，保留你选定的格式。</text>
+  </g>
+  <path d="m1116 337 4 12 12 4-12 4-4 12-4-12-12-4 12-4Z" fill="#FF9878"/>
+</svg>
